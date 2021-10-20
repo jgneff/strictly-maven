@@ -59,8 +59,7 @@ parts:
     plugin: nil
     source: https://downloads.apache.org/maven/maven-3/${SNAPCRAFT_PROJECT_VERSION}/source/apache-maven-${SNAPCRAFT_PROJECT_VERSION}-src.tar.gz
     source-checksum: sha512/7d7b6abf8f0407f95e35ccf857412b59c8ebfa0b2eef8cf52badf20d47e4be1e79f2412965d514314240184847b5bf5c20e63c7f4b8d6cce5d2f3bc5bd31d2f2
-    build-packages:
-    - maven
+    build-packages: [maven]
     override-build: |
       # Gets the host and port from a proxy URL
       #   $1 = the proxy URL, such as "http://10.10.10.1:8222/"
@@ -69,16 +68,18 @@ parts:
           port=$(echo "$1" | sed -E 's|https?://[^:/]*:?([0-9]*)/?|\1|')
       }
 
-      # Builds the Maven command using shell positional parameters
-      set -- mvn
+      # Sets Java networking properties when using a proxy server
       if [ -n "${http_proxy:-}" ]; then
           getproxy "$http_proxy"
-          set -- "$@" "-Dhttp.proxyHost=$host" "-Dhttp.proxyPort=$port"
+          http="-Dhttp.proxyHost=$host -Dhttp.proxyPort=$port"
       fi
       if [ -n "${https_proxy:-}" ]; then
           getproxy "$https_proxy"
-          set -- "$@" "-Dhttps.proxyHost=$host" "-Dhttps.proxyPort=$port"
+          https="-Dhttps.proxyHost=$host -Dhttps.proxyPort=$port"
       fi
-      "$@" -DdistributionTargetDir="$SNAPCRAFT_PART_INSTALL/maven" \
+
+      # Builds Maven
+      export MAVEN_OPTS="$http $https"
+      mvn -DdistributionTargetDir="$SNAPCRAFT_PART_INSTALL/maven" \
           -Dmaven.buildNumber.skip=true \
-          --batch-mode --strict-checksums install
+          --batch-mode --strict-checksums --quiet install
