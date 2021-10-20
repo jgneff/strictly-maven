@@ -62,5 +62,23 @@ parts:
     build-packages:
     - maven
     override-build: |
-      mvn -DdistributionTargetDir="$SNAPCRAFT_PART_INSTALL/maven" \
-          -Dmaven.buildNumber.skip=true --strict-checksums install
+      # Gets the host and port from a proxy URL
+      #   $1 = the proxy URL, such as "http://10.10.10.1:8222/"
+      getproxy () {
+          host=$(echo "$1" | sed -E 's|https?://([^:/]*):?[0-9]*/?|\1|')
+          port=$(echo "$1" | sed -E 's|https?://[^:/]*:?([0-9]*)/?|\1|')
+      }
+
+      # Builds the Maven command using shell positional parameters
+      set -- mvn
+      if [ -n "${http_proxy:-}" ]; then
+          getproxy "$http_proxy"
+          set -- "$@" "-Dhttp.proxyHost=$host" "-Dhttp.proxyPort=$port"
+      fi
+      if [ -n "${https_proxy:-}" ]; then
+          getproxy "$https_proxy"
+          set -- "$@" "-Dhttps.proxyHost=$host" "-Dhttps.proxyPort=$port"
+      fi
+      "$@" -DdistributionTargetDir="$SNAPCRAFT_PART_INSTALL/maven" \
+          -Dmaven.buildNumber.skip=true \
+          --batch-mode --strict-checksums install
