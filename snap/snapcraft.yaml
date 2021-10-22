@@ -19,13 +19,14 @@ summary: Apache Maven for the OpenJDK Snap
 description: |
   Apache Maven is a build automation tool used primarily for Java
   projects. Maven can also be used to build and manage projects
-  written in C#, Ruby, Scala, and other languages.
+  written in C#, Ruby, Scala, and other languages. Maven projects
+  are configured with a Project Object Model (POM) in a 'pom.xml' file.
 
-  This package provides the Maven build tool for Linux and uses the
-  OpenJDK Snap package, if installed, when the JAVA_HOME environment
-  variable is not set. Building this package downloads the Maven source
-  code directly from the Apache Web site, verifies its SHA-512 hash
-  value, and builds Maven from source.
+  This package provides Maven for Linux and uses the OpenJDK Snap
+  package, if installed, when the JAVA_HOME environment variable
+  is not set. Building this package downloads the Maven source code
+  directly from the Apache Web site, verifies its SHA-512 hash value,
+  and builds Maven from source using the Ubuntu Maven package.
 
   For more information, see the repository for this package on GitHub:
 
@@ -83,3 +84,6 @@ parts:
       mvn -DdistributionTargetDir="$SNAPCRAFT_PART_INSTALL/maven" \
           -Dmaven.buildNumber.skip=true \
           --batch-mode --strict-checksums --quiet install
+
+      # Prints Maven version information
+      mvn --version
