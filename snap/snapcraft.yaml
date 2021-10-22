@@ -72,18 +72,18 @@ parts:
       # Sets Java networking properties when using a proxy server
       if [ -n "${http_proxy:-}" ]; then
           getproxy "$http_proxy"
-          http="-Dhttp.proxyHost=$host -Dhttp.proxyPort=$port"
+          proxies="-Dhttp.proxyHost=$host -Dhttp.proxyPort=$port"
       fi
       if [ -n "${https_proxy:-}" ]; then
           getproxy "$https_proxy"
-          https="-Dhttps.proxyHost=$host -Dhttps.proxyPort=$port"
+          proxies="$proxies -Dhttps.proxyHost=$host -Dhttps.proxyPort=$port"
       fi
 
       # Builds Maven
-      export MAVEN_OPTS="$http $https"
+      export MAVEN_OPTS="$proxies"
       mvn -DdistributionTargetDir="$SNAPCRAFT_PART_INSTALL/maven" \
           -Dmaven.buildNumber.skip=true \
-          --batch-mode --strict-checksums --quiet install
+          --batch-mode --strict-checksums --quiet package
 
       # Prints Maven version information
       mvn --version
