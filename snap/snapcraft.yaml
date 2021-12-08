@@ -35,7 +35,7 @@ description: |
   Java and OpenJDK are trademarks or registered trademarks of Oracle
   and/or its affiliates.
 
-version: '3.8.3'
+version: '3.8.4'
 license: Apache-2.0
 
 base: core18
@@ -59,7 +59,7 @@ parts:
   maven:
     plugin: nil
     source: https://downloads.apache.org/maven/maven-3/${SNAPCRAFT_PROJECT_VERSION}/source/apache-maven-${SNAPCRAFT_PROJECT_VERSION}-src.tar.gz
-    source-checksum: sha512/7d7b6abf8f0407f95e35ccf857412b59c8ebfa0b2eef8cf52badf20d47e4be1e79f2412965d514314240184847b5bf5c20e63c7f4b8d6cce5d2f3bc5bd31d2f2
+    source-checksum: sha512/ea4b5f2b29be45d22e716099d0ef87367c78766aade094e8d7f295fe3b2c98cba2bf0f214d3ed55e2c17d2f74c82352cf9dc83fa47ddc97a8d2b847315500431
     build-packages: [maven]
     override-build: |
       # Gets the host and port from a proxy URL
