@@ -38,7 +38,7 @@ description: |
 version: '3.8.4'
 license: Apache-2.0
 
-base: core18
+base: core20
 grade: stable
 confinement: classic
 
@@ -49,6 +49,10 @@ architectures:
 apps:
   mymaven:
     command: bin/maven.sh
+  strict:
+    command: bin/strict.sh
+  debian:
+    command: bin/debian.sh
 
 parts:
   bin:
@@ -58,8 +62,9 @@ parts:
 
   maven:
     plugin: nil
-    source: https://downloads.apache.org/maven/maven-3/${SNAPCRAFT_PROJECT_VERSION}/source/apache-maven-${SNAPCRAFT_PROJECT_VERSION}-src.tar.gz
-    source-checksum: sha512/ea4b5f2b29be45d22e716099d0ef87367c78766aade094e8d7f295fe3b2c98cba2bf0f214d3ed55e2c17d2f74c82352cf9dc83fa47ddc97a8d2b847315500431
+    source: https://github.com/apache/maven.git
+    source-tag: maven-$SNAPCRAFT_PROJECT_VERSION
+    source-depth: 1
     build-packages: [maven]
     override-build: |
       # Gets the host and port from a proxy URL
