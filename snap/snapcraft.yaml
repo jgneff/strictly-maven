@@ -72,8 +72,11 @@ parts:
       # Gets the host and port from a proxy URL
       #   $1 = the proxy URL, such as "http://10.10.10.1:8222/"
       getproxy () {
-          host=$(echo "$1" | sed -E 's|https?://([^:/]*):?[0-9]*/?|\1|')
-          port=$(echo "$1" | sed -E 's|https?://[^:/]*:?([0-9]*)/?|\1|')
+          # Parses URL with Bash or Dash shell parameter expansion
+          tail=${1#http*://}
+          head=${tail%%/*}
+          host=${head%:*}
+          port=${head##*:}
       }
 
       # Sets Java networking properties when using a proxy server
@@ -90,7 +93,5 @@ parts:
       # Builds Maven
       export MAVEN_OPTS="$proxies"
       mvn -DdistributionTargetDir="$SNAPCRAFT_PART_INSTALL/maven" \
-          --batch-mode --strict-checksums --quiet package
-
-      # Prints Maven version information
-      mvn --version
+          --batch-mode --strict-checksums --quiet --show-version \
+          package
