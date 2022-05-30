@@ -13,23 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: mymaven
-title: My Maven
-summary: Apache Maven build tool for the OpenJDK Snap
+name: strictly-maven
+title: Strictly Maven
+summary: Apache Maven in a strictly-confined snap
 description: |
   Apache Maven is a build automation tool used primarily for Java
   projects. Maven can also be used to build and manage projects
   written in C#, Ruby, Scala, and other languages. Maven projects are
-  configured using a Project Object Model stored in a 'pom.xml' file.
+  configured using a Project Object Model stored in a "pom.xml" file.
 
   This package provides the latest release of Maven built directly
   from its source code on GitHub. If the OpenJDK Snap package is also
   installed, this package connects to it during installation for the
   location of its Java Development Kit runtime and tools.
 
-  For more information, see the repository for this package on GitHub:
+  This Snap package is strictly confined, running in complete isolation
+  with only limited access to your home directory and network. For
+  more information, see the repository for this package on GitHub:
 
-  https://github.com/jgneff/mymaven
+  https://github.com/jgneff/strictly-maven
 
   This is a convenience binary of the Apache Maven build tool and not a
   release by the Apache Software Foundation. Official releases are at:
@@ -57,7 +59,7 @@ plugs:
     target: $SNAP/jdk
 
 apps:
-  mymaven:
+  strictly-maven:
     command: bin/maven.sh
     plugs: [home, network]
 
