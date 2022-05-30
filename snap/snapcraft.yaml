@@ -15,51 +15,58 @@
 
 name: mymaven
 title: My Maven
-summary: Apache Maven for the OpenJDK Snap
+summary: Apache Maven build tool for the OpenJDK Snap
 description: |
   Apache Maven is a build automation tool used primarily for Java
   projects. Maven can also be used to build and manage projects
-  written in C#, Ruby, Scala, and other languages. Maven projects
-  are configured with a Project Object Model (POM) in a 'pom.xml' file.
+  written in C#, Ruby, Scala, and other languages. Maven projects are
+  configured using a Project Object Model stored in a 'pom.xml' file.
 
-  This package provides Maven for Linux and uses the OpenJDK Snap
-  package, if installed, when the JAVA_HOME environment variable
-  is not set. Building this package downloads the Maven source code
-  directly from the Apache Web site, verifies its SHA-512 hash value,
-  and builds Maven from source using the Ubuntu Maven package.
+  This package provides the latest release of Maven built directly
+  from its source code on GitHub. If the OpenJDK Snap package is also
+  installed, this package connects to it during installation for the
+  location of its Java Development Kit runtime and tools.
 
   For more information, see the repository for this package on GitHub:
 
   https://github.com/jgneff/mymaven
 
-  Java and OpenJDK are trademarks or registered trademarks of Oracle
-  and/or its affiliates.
+  This is a convenience binary of the Apache Maven build tool and not a
+  release by the Apache Software Foundation. Official releases are at:
+
+  https://maven.apache.org
+
+  Apache Maven and the Maven logo are either registered trademarks or
+  trademarks of the Apache Software Foundation in the United States
+  and/or other countries.
 
 version: '3.8.5'
 license: Apache-2.0
 
-base: core20
+base: core18
 grade: stable
-confinement: classic
+confinement: strict
 
 architectures:
 - build-on: amd64
   run-on: all
 
+plugs:
+  jdk-18-1804:
+    interface: content
+    target: $SNAP/jdk
+
 apps:
   mymaven:
     command: bin/maven.sh
-  strict:
-    command: bin/strict.sh
-  debian:
-    command: bin/debian.sh
+    plugs: [home, network]
 
 parts:
-  bin:
+  dump:
     plugin: dump
     source: .
     source-type: local
-    stage: [bin]
+    stage: [bin, conf]
 
   maven:
     plugin: nil
