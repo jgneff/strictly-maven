@@ -15,7 +15,7 @@
 
 name: strictly-maven
 title: Strictly Maven
-summary: Apache Maven in a strictly-confined snap
+summary: Apache Maven™ in a strictly-confined snap
 description: |
   Apache Maven is a build automation tool used primarily for Java
   projects. Maven can also be used to build and manage projects
