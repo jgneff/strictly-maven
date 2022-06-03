@@ -24,7 +24,7 @@ The Strictly Maven Snap package created by this repository does just that. It's 
 
 ## Description
 
-### Trusting
+### Trust
 
 The steps in building the packages are open and transparent so that you can gain trust in the process that creates them instead of having to put all of your trust in their publisher. Below is a link to each step of the build process:
 
@@ -35,7 +35,7 @@ The steps in building the packages are open and transparent so that you can gain
 
 The [Launchpad build farm](https://launchpad.net/builders) runs each build in a transient container created from trusted images to ensure a clean and isolated build environment. It's the same build farm that creates the Debian packages installed on my Ubuntu system, so I'm already trusting its build infrastructure by running Ubuntu. Snap packages built on Launchpad include a manifest file, called `manifest.yaml`, that lets you verify the build and identify its dependencies.
 
-### Installing
+### Install
 
 Install the Strictly Maven Snap package with the command:
 
@@ -66,7 +66,7 @@ network               strictly-maven:network      :network             -
 
 You may use a different Java Development Kit by setting the `JAVA_HOME` environment variable, but because the Strictly Maven Snap package is strictly confined, the JDK must be located in a non-hidden folder of your home directory.
 
-### Running
+### Run
 
 You can put the following alias in your `~/.bash_aliases` file to be able to run the Strictly Maven Snap package using the normal Maven `mvn` command:
 
@@ -103,7 +103,7 @@ The Snap package [runs Maven](bin/maven.sh) with a command equivalent to the fol
     --settings ~/snap/strictly-maven/common/settings.xml "$@"
 ```
 
-### Building
+### Build
 
 You can build the Snap package on Linux by installing [Snapcraft](https://snapcraft.io/snapcraft) on your development workstation. Run the following commands to install Snapcraft, clone this repository, and start building the package:
 
