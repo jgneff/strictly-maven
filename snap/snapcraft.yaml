@@ -53,6 +53,11 @@ architectures:
 - build-on: amd64
   run-on: [amd64, arm64, armhf, i386, ppc64el, s390x]
 
+slots:
+  maven-3-1804:
+    interface: content
+    read: [$SNAP/maven]
+
 plugs:
   jdk-18-1804:
     interface: content
