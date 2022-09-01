@@ -22,7 +22,7 @@ I wanted a release of Maven that was:
 
 The Strictly Maven Snap package created by this repository does just that. It's actually easier for me to keep this Snap package up to date than it is to track, download, trust, verify, unpack, and set up each new release from Apache.
 
-## Description
+## Usage
 
 ### Trust
 

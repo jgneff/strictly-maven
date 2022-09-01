@@ -109,3 +109,7 @@ parts:
       mvn -DdistributionTargetDir="$SNAPCRAFT_PART_INSTALL/maven" \
           --batch-mode --strict-checksums --quiet --show-version \
           package
+
+      # Patches the default location of the local repository
+      cp "$SNAPCRAFT_PROJECT_DIR/conf/settings-global.xml" \
+          "$SNAPCRAFT_PART_INSTALL/maven/conf/settings.xml"

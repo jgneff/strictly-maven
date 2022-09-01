@@ -19,9 +19,9 @@ set -o errexit
 : "${SNAP:?}"
 : "${SNAP_USER_COMMON:?}"
 
-# Creates the Maven settings file if not present
+# Creates the Maven user settings file if not found
 if [ ! -e "$SNAP_USER_COMMON/settings.xml" ]; then
-    cp "$SNAP/conf/settings.xml" "$SNAP_USER_COMMON/"
+    cp "$SNAP/conf/settings-user.xml" "$SNAP_USER_COMMON/settings.xml"
 fi
 
 # Uses the OpenJDK Snap, if connected, when JAVA_HOME is not set
