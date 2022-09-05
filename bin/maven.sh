@@ -24,8 +24,8 @@ if [ ! -e "$SNAP_USER_COMMON/settings.xml" ]; then
     cp "$SNAP/conf/settings-user.xml" "$SNAP_USER_COMMON/settings.xml"
 fi
 
-# Uses the OpenJDK Snap, if connected, when JAVA_HOME is not set
-if [ -z "$JAVA_HOME" ] && [ -d "$SNAP/jdk" ]; then
+# Uses the OpenJDK Snap if connected
+if [ -d "$SNAP/jdk" ]; then
     export JAVA_HOME=$SNAP/jdk
 fi
 
