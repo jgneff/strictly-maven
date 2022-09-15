@@ -1,41 +1,8 @@
-## Summary
+![Strictly Maven: Apache Maven™ in a strictly-confined snap](images/banner.svg)
 
-[Apache Maven](https://maven.apache.org) is a build automation tool used primarily for Java projects. Maven can also be used to build and manage projects written in C#, Ruby, Scala, and other languages. Maven projects are configured using a Project Object Model stored in a `pom.xml` file.
+[Apache Maven](https://maven.apache.org) is a build automation tool used primarily for Java projects, with support for projects written in C#, Ruby, Scala, and other languages. This project builds [Snap packages](https://snapcraft.io/strictly-maven) of Maven directly from its [source repository](https://github.com/apache/maven) on GitHub. These packages are strictly confined, running in complete isolation with only limited access to your system. See the **Install** and **Usage** sections below for details.
 
-This repository creates the [Strictly Maven Snap package](https://snapcraft.io/strictly-maven), which provides the latest release of Maven built directly from its [source code](https://github.com/apache/maven) on GitHub. If the [OpenJDK Snap package](https://snapcraft.io/openjdk) is also installed, this package connects to it automatically for the location of its Java Development Kit runtime and tools.
-
-This Snap package is **strictly confined**, running in complete isolation with only limited access to your home directory and network. This project is an experiment to determine whether Maven can run in a restricted environment. Please install this Snap package only if you're interested in such a test.
-
-## Motivation
-
-It's getting more and more difficult for Linux distributions to keep up with every new release of the various developer tools. As a result, their package repositories are getting more and more [out of date](https://packages.ubuntu.com/search?keywords=maven&searchon=names&exact=1).
-
-One alternative is to get these tools directly from their upstream projects. Yet that often involves a tedious series of tasks, such as tracking the updates, downloading each new release, trusting the build infrastructure, verifying the checksum and signatures, unpacking the archive, and setting up the environment variables. In the case of Maven, the tool downloads hundreds of files on its first invocation, by default without even verifying the integrity of the downloaded artifacts.
-
-I wanted a release of Maven that was:
-
-* built directly from source, identified strictly by its Git release tag or branch,
-* built transparently, using transient containers created from trusted images,
-* downloaded, verified, and installed automatically with each update,
-* confined strictly, having limited access to my development workstation, and
-* configured to strictly verify the checksum of each artifact that it downloads.
-
-The Strictly Maven Snap package created by this repository does just that. It's actually easier for me to keep this Snap package up to date than it is to track, download, trust, verify, unpack, and set up each new release from Apache.
-
-## Usage
-
-### Trust
-
-The steps in building the packages are open and transparent so that you can gain trust in the process that creates them instead of having to put all of your trust in their publisher. Below is a link to each step of the build process:
-
-* [Snap Source](snap/snapcraft.yaml) - build file used to create the Snap package
-* [Maven Source](https://github.com/apache/maven/tags) - release tags used to obtain the Maven source code
-* [Snap Package](https://launchpad.net/~jgneff/+snap/strictly-maven) - information about the package and its latest builds
-* [Snap Listing](https://snapcraft.io/strictly-maven) - listing for the package in the Snap Store
-
-The [Launchpad build farm](https://launchpad.net/builders) runs each build in a transient container created from trusted images to ensure a clean and isolated build environment. It's the same build farm that creates the Debian packages installed on my Ubuntu system, so I'm already trusting its build infrastructure by running Ubuntu. Snap packages built on Launchpad include a manifest file, called `manifest.yaml`, that lets you verify the build and identify its dependencies.
-
-### Install
+## Install
 
 Install the Strictly Maven Snap package with the command:
 
@@ -46,27 +13,100 @@ $ sudo snap install strictly-maven
 The Snap package is [strictly confined](https://snapcraft.io/docs/snap-confinement) and adds only the following interfaces to its permissions:
 
 * the [home interface](https://snapcraft.io/docs/home-interface) to read and write files under your home directory, and
-* the [network interface](https://snapcraft.io/docs/network-interface) to download artifacts from remote repositories like Maven Central.
+* the [network interface](https://snapcraft.io/docs/network-interface) to download artifacts from remote repositories such as Maven Central.
 
-If the [OpenJDK Snap package](https://snapcraft.io/openjdk) is also installed, the Strictly Maven Snap package connects to it automatically for its JDK runtime and tools. You can connect them manually with the command:
+If the [OpenJDK Snap package](https://snapcraft.io/openjdk) is also installed, the Strictly Maven Snap package connects to it automatically for its Java Development Kit (JDK):
 
 ```console
-$ sudo snap connect strictly-maven:jdk-18-1804 openjdk
+$ sudo snap install openjdk
 ```
 
-Once installed and connected, you'll see the following interfaces:
+Once both packages are installed, you'll see the following interface among the list of connections:
 
 ```console
 $ snap connections strictly-maven
 Interface             Plug                        Slot                 Notes
 content[jdk-18-1804]  strictly-maven:jdk-18-1804  openjdk:jdk-18-1804  -
-home                  strictly-maven:home         :home                -
-network               strictly-maven:network      :network             -
 ```
 
-You may use a different Java Development Kit by setting the `JAVA_HOME` environment variable, but because the Strictly Maven Snap package is strictly confined, the JDK must be located in a non-hidden folder of your home directory.
+You can also connect them manually with the command:
 
-### Run
+```console
+$ sudo snap connect strictly-maven:jdk-18-1804 openjdk
+```
+
+You can use a different JDK by disconnecting the OpenJDK Snap package and setting the `JAVA_HOME` environment variable. Because the Strictly Maven Snap package is strictly confined, the JDK must be located in a non-hidden folder of your home directory. For example:
+
+```console
+$ sudo snap disconnect strictly-maven:jdk-18-1804
+$ export JAVA_HOME=$HOME/opt/jdk-20
+$ strictly-maven --version
+```
+
+## Trust
+
+The steps in building the packages are open and transparent so that you can gain trust in the process that creates them instead of having to put all of your trust in their publisher.
+
+Each step of the build process is documented below:
+
+* [Build File](snap/snapcraft.yaml) - the Snapcraft build file that creates the Snap package
+* [Source Code](https://github.com/apache/maven/tags) - the release tags used to obtain the Maven source code
+* [Snap Package](https://launchpad.net/~jgneff/+snap/strictly-maven) - information about the package and its latest builds on Launchpad
+* [Snap Store](https://snapcraft.io/strictly-maven) - the listing for Strictly Maven in the Snap Store
+
+The [Launchpad build farm](https://launchpad.net/builders) runs each build in a transient container created from trusted images to ensure a clean and isolated build environment. Snap packages built on Launchpad include a manifest that lets you verify the build and identify its dependencies.
+
+## Verify
+
+Each Strictly Maven package provides a software bill of materials (SBOM) and a link to its build log. This information is contained in a file called `manifest.yaml` in the directory `/snap/strictly-maven/current/snap`. The `image-info` section of the manifest provides a link to the package's page on Launchpad with its build status, including the complete log file from the container that ran the build. You can use this information to verify that the Strictly Maven Snap package installed on your system was built from source on Launchpad using only the software in [Ubuntu 18.04 LTS](https://cloud-images.ubuntu.com/bionic/current/).
+
+For example, I'll demonstrate how I verify the Strictly Maven Snap package installed on my system at the time of this writing. The `snap info` command shows that I installed Strictly Maven version 3.8.6 with revision 5:
+
+```console
+$ snap info strictly-maven
+...
+channels:
+  latest/stable:    3.8.6 2022-09-15 (5) 8MB -
+  latest/candidate: ↑
+  latest/beta:      ↑
+  latest/edge:      ↑
+installed:          3.8.6            (5) 8MB -
+```
+
+The following command prints the build information from the manifest file:
+
+```console
+$ grep -A3 image-info /snap/strictly-maven/current/snap/manifest.yaml
+image-info:
+  build-request-id: lp-73843238
+  build-request-timestamp: '2022-09-05T19:13:48Z'
+  build_url: https://launchpad.net/~jgneff/+snap/strictly-maven/+build/1871681
+```
+
+The `build_url` in the manifest is a link to the [page on Launchpad](https://launchpad.net/~jgneff/+snap/strictly-maven/+build/1871681) with the package's **Build status** and **Store status**. The store status shows that Launchpad uploaded revision 5 to the Snap Store, which matches the revision installed on my system. The build status shows a link to the log file with the label *buildlog*.
+
+The end of the log file contains a line with the SHA512 checksum of the package just built, shown below with the checksum edited to fit on this page:
+
+```
+Snapping...
+Snapped strictly-maven_3.8.6_multi.snap
+Starting Snapcraft 7.1.3
+Logging execution to
+  '/root/.cache/snapcraft/log/snapcraft-20220905-191600.223321.log'
+984bd6d368c7e795...135842df5d1c0989  strictly-maven_3.8.6_multi.snap
+Revoking proxy token...
+```
+
+The command below prints the checksum of the package installed on my system:
+
+```console
+$ sudo sha512sum /var/lib/snapd/snaps/strictly-maven_5.snap
+984bd6d368c7e795...135842df5d1c0989  /var/lib/snapd/snaps/strictly-maven_5.snap
+```
+
+The two checksum strings are identical. Using this procedure, I verified that the Strictly Maven Snap package installed on my system and the Strictly Maven Snap package built and uploaded to the Snap Store by Launchpad are in fact the exact same package. For more information, see [Launchpad Bug #1979844](https://bugs.launchpad.net/launchpad/+bug/1979844), "Allow verifying that a snap recipe build corresponds to a store revision."
+
+## Usage
 
 You can put the following alias in your `~/.bash_aliases` file to be able to run the Strictly Maven Snap package using the normal Maven `mvn` command:
 
@@ -80,35 +120,42 @@ Verify that the Strictly Maven Snap package is working and connected to the Open
 $ type mvn
 mvn is aliased to `strictly-maven'
 $ mvn --version
-Apache Maven 3.8.5 (3599d3414f046de2324203b78ddcf9b5e4388aa0)
-Maven home: /snap/strictly-maven/2/maven
-Java version: 18.0.1.1, vendor: Snap Build, runtime: /snap/strictly-maven/2/jdk
+Apache Maven 3.8.6 (84538c9988a25aec085021c365c560670ad80f63)
+Maven home: /snap/strictly-maven/5/maven
+Java version: 18.0.2.1, vendor: Snap Build, runtime: /snap/strictly-maven/5/jdk
 Default locale: en_US, platform encoding: UTF-8
-OS name: "linux", version: "5.13.0-44-generic", arch: "amd64", family: "unix"
+OS name: "linux", version: "5.15.0-46-generic", arch: "amd64", family: "unix"
+```
+
+If you instead see the error message below, make sure that the OpenJDK Snap package is installed and connected as described earlier under the **Install** section:
+
+```console
+$ mvn --version
+The JAVA_HOME environment variable is not defined correctly,
+this environment variable is needed to run this program.
 ```
 
 Then switch to a Maven project directory and try running the `mvn clean` command. If this is the first time, you'll see Maven downloading the plugins required for the `clean` phase.
 
-The Snap package does not have access to hidden files or folders in your home directory, such as the default Maven `~/.m2` directory, so it uses the following alternative locations:
+The Snap package does not have access to hidden files or folders in your home directory, so it uses the following alternative locations for the Maven user settings file and local repository directory:
 
-| Normal Maven         | Strictly Maven |
-|----------------------|----------------|
+| Apache Maven Default | Strictly Maven Alternative |
+|----------------------|----------------------------|
 | `~/.m2/settings.xml` | `~/snap/strictly-maven/common/settings.xml` |
 | `~/.m2/repository`   | `~/snap/strictly-maven/common/repository`   |
 
-The Snap package [runs Maven](bin/maven.sh) with a command equivalent to the following:
+The Snap package [runs Maven](bin/maven.sh) in its strictly-confined environment with a command equivalent to the following:
 
 ```bash
-/snap/strictly-maven/current/maven/bin/mvn --strict-checksums \
-    --settings ~/snap/strictly-maven/common/settings.xml "$@"
+mvn --strict-checksums --settings ~/snap/strictly-maven/common/settings.xml "$@"
 ```
 
-### Build
+## Build
 
 You can build the Snap package on Linux by installing [Snapcraft](https://snapcraft.io/snapcraft) on your development workstation. Run the following commands to install Snapcraft, clone this repository, and start building the package:
 
 ```console
-$ sudo snap install snapcraft
+$ sudo snap install snapcraft --classic
 $ git clone https://github.com/jgneff/strictly-maven.git
 $ cd strictly-maven
 $ snapcraft
@@ -120,8 +167,8 @@ To run the build remotely on Launchpad, enter the command:
 $ snapcraft remote-build
 ```
 
-See the [Snapcraft Overview](https://snapcraft.io/docs/snapcraft-overview) page for more information on building Snap packages.
+See the [Snapcraft Overview](https://snapcraft.io/docs/snapcraft-overview) page for more information about building Snap packages.
 
 ## License
 
-This project is licensed under the Apache License 2.0, the same license used by the Apache Maven project. Apache Maven and the Maven logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries.
+This project is licensed under the Apache License 2.0, the same license used by the Apache Maven project. See the [LICENSE](LICENSE) file for details. Apache Maven and the Maven logo are either registered trademarks or trademarks of the Apache Software Foundation in the United States and/or other countries.

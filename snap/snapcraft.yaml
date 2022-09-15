@@ -25,16 +25,16 @@ description: |
   This package provides the latest release of Maven built directly
   from its source code on GitHub. If the OpenJDK Snap package is
   also installed, this package connects to it automatically for the
-  location of its Java Development Kit runtime and tools.
+  location of its Java Development Kit.
 
   This Snap package is strictly confined, running in complete isolation
-  with only limited access to your home directory and network. For
-  more information, see the repository for this package on GitHub:
+  with only limited access to your system. For more information,
+  see the repository for this package on GitHub:
 
   https://github.com/jgneff/strictly-maven
 
-  This is a convenience binary of the Apache Maven build tool and not a
-  release by the Apache Software Foundation. Official releases are at:
+  This is a convenience binary of the Maven tool and not a release
+  by the Apache Software Foundation. For official releases, see:
 
   https://maven.apache.org
 
