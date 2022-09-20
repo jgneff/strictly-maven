@@ -2,6 +2,12 @@
 
 [Apache Maven](https://maven.apache.org) is a build automation tool used primarily for Java projects, with support for projects written in C#, Ruby, Scala, and other languages. This project builds [Snap packages](https://snapcraft.io/strictly-maven) of Maven directly from its [source repository](https://github.com/apache/maven) on GitHub. These packages are strictly confined, running in complete isolation with only limited access to your system. See the **Install** and **Usage** sections below for details.
 
+## See also
+
+* [OpenJDK](https://github.com/jgneff/openjdk) - Current JDK release and early-access builds
+* [OpenJFX](https://github.com/jgneff/openjfx) - Current JavaFX release and early-access builds
+* [Strictly NetBeans](https://github.com/jgneff/strictly-netbeans) - Apache NetBeans® in a strictly-confined snap
+
 ## Install
 
 Install the Strictly Maven Snap package with the command:
@@ -15,30 +21,30 @@ The Snap package is [strictly confined](https://snapcraft.io/docs/snap-confineme
 * the [home interface](https://snapcraft.io/docs/home-interface) to read and write files under your home directory, and
 * the [network interface](https://snapcraft.io/docs/network-interface) to download artifacts from remote repositories such as Maven Central.
 
-If the [OpenJDK Snap package](https://snapcraft.io/openjdk) is also installed, the Strictly Maven Snap package connects to it automatically for its Java Development Kit (JDK):
+When you install Strictly Maven, it will automatically install the [OpenJDK Snap package](https://snapcraft.io/openjdk) and connect to it for its Java Development Kit (JDK). You can also install the OpenJDK Snap package manually with the command:
 
 ```console
 $ sudo snap install openjdk
 ```
 
-Once both packages are installed, you'll see the following interface among the list of connections:
+After both packages are installed, you'll see the following interface among their list of connections:
 
 ```console
 $ snap connections strictly-maven
 Interface             Plug                        Slot                 Notes
-content[jdk-18-1804]  strictly-maven:jdk-18-1804  openjdk:jdk-18-1804  -
+content[jdk-19-1804]  strictly-maven:jdk-19-1804  openjdk:jdk-19-1804  -
 ```
 
 You can also connect them manually with the command:
 
 ```console
-$ sudo snap connect strictly-maven:jdk-18-1804 openjdk
+$ sudo snap connect strictly-maven:jdk-19-1804 openjdk:jdk-19-1804
 ```
 
 You can use a different JDK by disconnecting the OpenJDK Snap package and setting the `JAVA_HOME` environment variable. Because the Strictly Maven Snap package is strictly confined, the JDK must be located in a non-hidden folder of your home directory. For example:
 
 ```console
-$ sudo snap disconnect strictly-maven:jdk-18-1804
+$ sudo snap disconnect strictly-maven:jdk-19-1804
 $ export JAVA_HOME=$HOME/opt/jdk-20
 $ strictly-maven --version
 ```
@@ -121,10 +127,10 @@ $ type mvn
 mvn is aliased to `strictly-maven'
 $ mvn --version
 Apache Maven 3.8.6 (84538c9988a25aec085021c365c560670ad80f63)
-Maven home: /snap/strictly-maven/5/maven
-Java version: 18.0.2.1, vendor: Snap Build, runtime: /snap/strictly-maven/5/jdk
+Maven home: /snap/strictly-maven/x1/maven
+Java version: 19, vendor: Snap Build, runtime: /snap/strictly-maven/x1/jdk
 Default locale: en_US, platform encoding: UTF-8
-OS name: "linux", version: "5.15.0-46-generic", arch: "amd64", family: "unix"
+OS name: "linux", version: "5.15.0-48-generic", arch: "amd64", family: "unix"
 ```
 
 If you instead see the error message below, make sure that the OpenJDK Snap package is installed and connected as described earlier under the **Install** section:
