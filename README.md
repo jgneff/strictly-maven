@@ -4,9 +4,23 @@
 
 ## See also
 
+This project is one of four that I created to gain control of my development environment:
+
 * [OpenJDK](https://github.com/jgneff/openjdk) - Current JDK release and early-access builds
+
+    [![openjdk](https://snapcraft.io/openjdk/badge.svg)](https://snapcraft.io/openjdk)
+
 * [OpenJFX](https://github.com/jgneff/openjfx) - Current JavaFX release and early-access builds
+
+    [![openjfx](https://snapcraft.io/openjfx/badge.svg)](https://snapcraft.io/openjfx)
+
+* [Strictly Maven](https://github.com/jgneff/strictly-maven) - Apache Maven™ in a strictly-confined snap
+
+    [![strictly-maven](https://snapcraft.io/strictly-maven/badge.svg)](https://snapcraft.io/strictly-maven)
+
 * [Strictly NetBeans](https://github.com/jgneff/strictly-netbeans) - Apache NetBeans® in a strictly-confined snap
+
+    [![strictly-netbeans](https://snapcraft.io/strictly-netbeans/badge.svg)](https://snapcraft.io/strictly-netbeans)
 
 ## Install
 
