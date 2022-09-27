@@ -69,10 +69,10 @@ The steps in building the packages are open and transparent so that you can gain
 
 Each step of the build process is documented below:
 
-* [Build File](snap/snapcraft.yaml) - the Snapcraft build file that creates the Snap package
+* [Build File](snap/snapcraft.yaml) - the Snapcraft build file that creates the package
 * [Source Code](https://github.com/apache/maven/tags) - the release tags used to obtain the Maven source code
 * [Snap Package](https://launchpad.net/~jgneff/+snap/strictly-maven) - information about the package and its latest builds on Launchpad
-* [Snap Store](https://snapcraft.io/strictly-maven) - the listing for Strictly Maven in the Snap Store
+* [Store Listing](https://snapcraft.io/strictly-maven) - the listing for the package in the Snap Store
 
 The [Launchpad build farm](https://launchpad.net/builders) runs each build in a transient container created from trusted images to ensure a clean and isolated build environment. Snap packages built on Launchpad include a manifest that lets you verify the build and identify its dependencies.
 
