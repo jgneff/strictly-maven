@@ -43,7 +43,7 @@ description: |
   trademarks of the Apache Software Foundation in the United States
   and/or other countries.
 
-version: '3.8.6'
+version: '3.8.7'
 license: Apache-2.0
 
 base: core18
