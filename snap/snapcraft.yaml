@@ -1,5 +1,5 @@
 # snapcraft.yaml - builds a Snap package of the Apache Maven build tool
-# Copyright 2021-2022 John Neffenger
+# Copyright 2021-2023 John Neffenger
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ description: |
   trademarks of the Apache Software Foundation in the United States
   and/or other countries.
 
-version: '3.9.0'
+version: '3.9.1'
 license: Apache-2.0
 
 base: core18
