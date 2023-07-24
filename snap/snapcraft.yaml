@@ -68,7 +68,7 @@ plugs:
 apps:
   strictly-maven:
     command: bin/maven.sh
-    plugs: [home, network]
+    plugs: [home, network, personal-files]
 
 parts:
   dump:
