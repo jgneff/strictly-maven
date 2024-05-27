@@ -1,5 +1,5 @@
 # snapcraft.yaml - builds a Snap package of the Apache Maven build tool
-# Copyright 2021-2023 John Neffenger
+# Copyright 2021-2024 John Neffenger
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,10 +43,10 @@ description: |
   trademarks of the Apache Software Foundation in the United States
   and/or other countries.
 
-version: '3.9.6'
+version: '3.9.7'
 license: Apache-2.0
 
-base: core18
+base: core20
 grade: stable
 confinement: strict
 
@@ -60,7 +60,7 @@ slots:
     read: [$SNAP/maven]
 
 plugs:
-  jdk-21-1804:
+  jdk-22-1804:
     interface: content
     target: $SNAP/jdk
     default-provider: openjdk
@@ -83,7 +83,9 @@ parts:
     source-type: git
     source-tag: maven-$SNAPCRAFT_PROJECT_VERSION
     source-depth: 1
-    build-packages: [maven]
+    build-packages:
+    - openjdk-17-jre-headless
+    - maven
     override-build: |
       # Gets the host and port from a proxy URL
       #   $1 = the proxy URL, such as "http://10.10.10.1:8222/"
@@ -108,9 +110,9 @@ parts:
 
       # Builds Maven
       export MAVEN_OPTS="$proxies"
-      mvn -DdistributionTargetDir="$SNAPCRAFT_PART_INSTALL/maven" \
-          --batch-mode --strict-checksums --quiet --show-version \
-          package
+      mvn --batch-mode --strict-checksums \
+          --define distributionTargetDir="$SNAPCRAFT_PART_INSTALL/maven" \
+          --quiet --show-version package
 
       # Patches the default location of the local repository
       cp "$SNAPCRAFT_PROJECT_DIR/conf/settings-global.xml" \
