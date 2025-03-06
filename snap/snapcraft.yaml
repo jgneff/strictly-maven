@@ -1,5 +1,5 @@
 # snapcraft.yaml - builds a Snap package of the Apache Maven build tool
-# Copyright 2021-2024 John Neffenger
+# Copyright 2021-2025 John Neffenger
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -43,27 +43,30 @@ description: |
   trademarks of the Apache Software Foundation in the United States
   and/or other countries.
 
-version: '3.9.9'
+adopt-info: maven
 license: Apache-2.0
 
-base: core20
+base: core24
 grade: stable
 confinement: strict
 
-architectures:
-- build-on: amd64
-  run-on: [amd64, arm64, armhf, i386, ppc64el, s390x]
+platforms:
+  all:
+    build-on: [amd64]
+    build-for: [all]
 
 slots:
   maven-3-1804:
     interface: content
     read: [$SNAP/maven]
+  maven-3-2404:
+    interface: content
+    read: [$SNAP/maven]
 
 plugs:
-  jdk-23-1804:
+  jdk-24-1804:
     interface: content
     target: $SNAP/jdk
-    default-provider: openjdk
 
 apps:
   strictly-maven:
@@ -79,13 +82,17 @@ parts:
 
   maven:
     plugin: nil
-    source: https://github.com/apache/maven.git
-    source-type: git
-    source-tag: maven-$SNAPCRAFT_PROJECT_VERSION
-    source-depth: 1
     build-packages:
-    - openjdk-17-jre-headless
+    - git
     - maven
+    - openjdk-17-jre-headless
+    override-pull: |
+      version=3.9.9
+      gitrepo=https://github.com/apache/maven.git
+
+      # Sets the project version and clones the source repository by its tag
+      craftctl set version="$version"
+      git clone --branch "maven-$version" --depth 1 $gitrepo "$CRAFT_PART_SRC"
     override-build: |
       # Gets the host and port from a proxy URL
       #   $1 = the proxy URL, such as "http://10.10.10.1:8222/"
@@ -111,9 +118,9 @@ parts:
       # Builds Maven
       export MAVEN_OPTS="$proxies"
       mvn --batch-mode --strict-checksums \
-          --define distributionTargetDir="$SNAPCRAFT_PART_INSTALL/maven" \
+          --define distributionTargetDir="$CRAFT_PART_INSTALL/maven" \
           --quiet --show-version package
 
       # Patches the default location of the local repository
-      cp "$SNAPCRAFT_PROJECT_DIR/conf/settings-global.xml" \
-          "$SNAPCRAFT_PART_INSTALL/maven/conf/settings.xml"
+      cp "$CRAFT_PROJECT_DIR/conf/settings-global.xml" \
+          "$CRAFT_PART_INSTALL/maven/conf/settings.xml"
