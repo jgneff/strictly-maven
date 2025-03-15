@@ -26,7 +26,7 @@ fi
 
 # Uses the OpenJDK Snap if connected
 if [ -d "$SNAP/jdk" ]; then
-    export JAVA_HOME=$SNAP/jdk
+    export JAVA_HOME="$SNAP/jdk"
 fi
 
 # Starts Maven
