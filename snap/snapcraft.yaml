@@ -87,7 +87,7 @@ parts:
     - maven
     - openjdk-17-jre-headless
     override-pull: |
-      version=3.9.9
+      version=3.9.10
       gitrepo=https://github.com/apache/maven.git
 
       # Sets the project version and clones the source repository by its tag
