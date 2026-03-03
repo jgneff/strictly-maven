@@ -43,10 +43,15 @@ description: |
   trademarks of the Apache Software Foundation in the United States
   and/or other countries.
 
-adopt-info: maven
-license: Apache-2.0
-
 base: core24
+license: Apache-2.0
+source-code: https://github.com/jgneff/strictly-maven
+contact: https://github.com/jgneff/strictly-maven/discussions
+issues: https://github.com/jgneff/strictly-maven/issues
+donation: https://github.com/sponsors/jgneff
+website: https://maven.apache.org
+
+adopt-info: maven
 grade: stable
 confinement: strict
 
