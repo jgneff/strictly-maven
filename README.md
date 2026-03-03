@@ -78,7 +78,7 @@ The [Launchpad build farm](https://launchpad.net/builders) runs each build in a 
 
 ## Verify
 
-Each Strictly Maven package provides a software bill of materials (SBOM) and a link to its build log. This information is contained in a file called `manifest.yaml` in the directory `/snap/strictly-maven/current/snap`. The `image-info` section of the manifest provides a link to the package's page on Launchpad with its build status, including the complete log file from the container that ran the build. You can use this information to verify that the Strictly Maven Snap package installed on your system was built from source on Launchpad using only the software in [Ubuntu 24.04 LTS](https://cloud-images.ubuntu.com/noble/current/).
+Each Strictly Maven package provides a software bill of materials (SBOM) and a link to its build log. This information is contained in a file called `manifest.yaml` in the directory `/snap/strictly-maven/current/snap`. The `image-info` section of the manifest provides a link to the package's page on Launchpad with its build status, including the complete log file from the container that ran the build. You can use this information to verify that the Strictly Maven Snap package installed on your system was built from source on Launchpad using only the software in [Ubuntu 24.04 LTS](https://cloud-images.ubuntu.com/noble/current/) and the official [Maven releases](https://maven.apache.org/download.cgi).
 
 For example, I'll demonstrate how I verify the Strictly Maven Snap package installed on my system at the time of this writing. The `snap info` command shows that I installed Strictly Maven version 3.9.9 with revision 24:
 

@@ -22,10 +22,10 @@ description: |
   written in C#, Ruby, Scala, and other languages. Maven projects
   are configured by a file with a Project Object Model (pom.xml).
 
-  This package provides the latest release of Maven built directly
-  from its source code on GitHub. If the OpenJDK Snap package is
-  also installed, this package connects to it automatically for the
-  location of its Java Development Kit.
+  This package provides the latest release of Maven built directly from
+  its source code on GitHub. If the OpenJDK Snap package is installed,
+  this package connects to it automatically for the location of its
+  Java Development Kit.
 
   This Snap package is strictly confined, running in complete isolation
   with only limited access to your system. For important information
@@ -51,7 +51,7 @@ issues: https://github.com/jgneff/strictly-maven/issues
 donation: https://github.com/sponsors/jgneff
 website: https://maven.apache.org
 
-adopt-info: maven
+adopt-info: mvn
 grade: stable
 confinement: strict
 
@@ -79,20 +79,27 @@ apps:
     plugs: [home, network]
 
 parts:
-  dump:
+  bin:
     plugin: dump
     source: .
     source-type: local
     stage: [bin, conf]
 
   maven:
+    plugin: dump
+    source: https://dlcdn.apache.org/maven/maven-3/3.9.12/binaries/apache-maven-3.9.12-bin.zip
+    source-type: zip
+    source-checksum: sha512/0ef0d074761a55e7b982fd7f2cd6ea2da028289c73156ebd488c0513efbff8a64ac5bc0c11c3b8bbced930ce15238ecef344b0e065ae54f7cdca8c86cf39e736
+    prime: [-*]
+
+  mvn:
+    after: [maven]
     plugin: nil
     build-packages:
     - git
-    - maven
     - openjdk-17-jre-headless
     override-pull: |
-      version=3.9.12
+      version=3.9.13
       gitrepo=https://github.com/apache/maven.git
 
       # Sets the project version and clones the source repository by its tag
@@ -110,10 +117,10 @@ parts:
       }
 
       # Sets Java networking properties when using a proxy server
-      proxies=""
+      proxies="-Daether.connector.http.useSystemProperties=true"
       if [ -n "${http_proxy:-}" ]; then
           getproxy "$http_proxy"
-          proxies="-Dhttp.proxyHost=$host -Dhttp.proxyPort=$port"
+          proxies="$proxies -Dhttp.proxyHost=$host -Dhttp.proxyPort=$port"
       fi
       if [ -n "${https_proxy:-}" ]; then
           getproxy "$https_proxy"
@@ -121,8 +128,9 @@ parts:
       fi
 
       # Builds Maven
+      export MAVEN_HOME="$CRAFT_STAGE/apache-maven-3.9.12"
       export MAVEN_OPTS="$proxies"
-      mvn --batch-mode --strict-checksums \
+      "$MAVEN_HOME/bin/mvn" --batch-mode --strict-checksums \
           --define distributionTargetDir="$CRAFT_PART_INSTALL/maven" \
           --quiet --show-version package
 
