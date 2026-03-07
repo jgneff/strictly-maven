@@ -87,17 +87,20 @@ parts:
 
   maven:
     plugin: nil
+    build-snaps:
+    - strictly-maven/latest/candidate
     build-packages:
     - git
-    - maven
     - openjdk-17-jre-headless
     override-pull: |
-      version=3.9.12
+      version=3.9.13
       gitrepo=https://github.com/apache/maven.git
 
       # Sets the project version and clones the source repository by its tag
       craftctl set version="$version"
       git clone --branch "maven-$version" --depth 1 $gitrepo "$CRAFT_PART_SRC"
+    build-environment:
+    - MAVEN_HOME: /snap/strictly-maven/current/maven
     override-build: |
       # Gets the host and port from a proxy URL
       #   $1 = the proxy URL, such as "http://10.10.10.1:8222/"
@@ -122,7 +125,7 @@ parts:
 
       # Builds Maven
       export MAVEN_OPTS="$proxies"
-      mvn --batch-mode --strict-checksums \
+      "$MAVEN_HOME/bin/mvn" --batch-mode --strict-checksums \
           --define distributionTargetDir="$CRAFT_PART_INSTALL/maven" \
           --quiet --show-version package
 
