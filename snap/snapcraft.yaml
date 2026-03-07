@@ -51,7 +51,7 @@ issues: https://github.com/jgneff/strictly-maven/issues
 donation: https://github.com/sponsors/jgneff
 website: https://maven.apache.org
 
-adopt-info: mvn
+adopt-info: maven
 grade: stable
 confinement: strict
 
@@ -79,27 +79,20 @@ apps:
     plugs: [home, network]
 
 parts:
-  bin:
+  dump:
     plugin: dump
     source: .
     source-type: local
     stage: [bin, conf]
 
   maven:
-    plugin: dump
-    source: https://dlcdn.apache.org/maven/maven-3/3.9.12/binaries/apache-maven-3.9.12-bin.zip
-    source-type: zip
-    source-checksum: sha512/0ef0d074761a55e7b982fd7f2cd6ea2da028289c73156ebd488c0513efbff8a64ac5bc0c11c3b8bbced930ce15238ecef344b0e065ae54f7cdca8c86cf39e736
-    prime: [-*]
-
-  mvn:
-    after: [maven]
     plugin: nil
     build-packages:
     - git
+    - maven
     - openjdk-17-jre-headless
     override-pull: |
-      version=3.9.13
+      version=3.9.12
       gitrepo=https://github.com/apache/maven.git
 
       # Sets the project version and clones the source repository by its tag
@@ -128,9 +121,8 @@ parts:
       fi
 
       # Builds Maven
-      export MAVEN_HOME="$CRAFT_STAGE/apache-maven-3.9.12"
       export MAVEN_OPTS="$proxies"
-      "$MAVEN_HOME/bin/mvn" --batch-mode --strict-checksums \
+      mvn --batch-mode --strict-checksums \
           --define distributionTargetDir="$CRAFT_PART_INSTALL/maven" \
           --quiet --show-version package
 
