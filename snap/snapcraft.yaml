@@ -43,7 +43,7 @@ description: |
   trademarks of the Apache Software Foundation in the United States
   and/or other countries.
 
-base: core24
+version: '3.9.13'
 license: Apache-2.0
 source-code: https://github.com/jgneff/strictly-maven
 contact: https://github.com/jgneff/strictly-maven/discussions
@@ -51,7 +51,7 @@ issues: https://github.com/jgneff/strictly-maven/issues
 donation: https://github.com/sponsors/jgneff
 website: https://maven.apache.org
 
-adopt-info: maven
+base: core24
 grade: stable
 confinement: strict
 
@@ -88,16 +88,15 @@ parts:
   maven:
     plugin: nil
     build-snaps:
-    - strictly-maven/latest/candidate
+    - strictly-maven/latest/stable
     build-packages:
     - git
     - openjdk-17-jre-headless
     override-pull: |
-      version=3.9.13
+      version=$(craftctl get version)
       gitrepo=https://github.com/apache/maven.git
 
-      # Sets the project version and clones the source repository by its tag
-      craftctl set version="$version"
+      # Clones the source repository by its tag
       git clone --branch "maven-$version" --depth 1 $gitrepo "$CRAFT_PART_SRC"
     build-environment:
     - MAVEN_HOME: /snap/strictly-maven/current/maven
