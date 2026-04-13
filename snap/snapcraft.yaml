@@ -43,7 +43,7 @@ description: |
   trademarks of the Apache Software Foundation in the United States
   and/or other countries.
 
-version: '3.9.14'
+version: '3.9.15'
 license: Apache-2.0
 source-code: https://github.com/jgneff/strictly-maven
 contact: https://github.com/jgneff/strictly-maven/discussions
@@ -69,7 +69,7 @@ slots:
     read: [$SNAP/maven]
 
 plugs:
-  jdk-25-2004:
+  jdk-26-2004:
     interface: content
     target: $SNAP/jdk
 
