@@ -43,13 +43,13 @@ description: |
   trademarks of the Apache Software Foundation in the United States
   and/or other countries.
 
-version: '3.9.15'
+version: '3.9.16'
 license: Apache-2.0
-source-code: https://github.com/jgneff/strictly-maven
-contact: https://github.com/jgneff/strictly-maven/discussions
-issues: https://github.com/jgneff/strictly-maven/issues
-donation: https://github.com/sponsors/jgneff
 website: https://maven.apache.org
+contact: https://github.com/jgneff/strictly-maven/discussions
+donation: https://github.com/sponsors/jgneff
+source-code: https://github.com/jgneff/strictly-maven
+issues: https://github.com/jgneff/strictly-maven/issues
 
 base: core24
 grade: stable
