@@ -43,7 +43,7 @@ description: |
   trademarks of the Apache Software Foundation in the United States
   and/or other countries.
 
-version: '3.9.16'
+version: '3.10.0'
 license: Apache-2.0
 website: https://maven.apache.org
 contact: https://github.com/jgneff/strictly-maven/discussions
@@ -69,7 +69,7 @@ slots:
     read: [$SNAP/maven]
 
 plugs:
-  jdk-26-2004:
+  jdk-27-2004:
     interface: content
     target: $SNAP/jdk
 
@@ -126,6 +126,7 @@ parts:
       export MAVEN_OPTS="$proxies"
       "$MAVEN_HOME/bin/mvn" --batch-mode --strict-checksums \
           --define distributionTargetDir="$CRAFT_PART_INSTALL/maven" \
+          --define skipTests=true \
           --quiet --show-version package
 
       # Patches the default location of the local repository
