@@ -132,3 +132,11 @@ parts:
       # Patches the default location of the local repository
       cp "$CRAFT_PROJECT_DIR/conf/settings-global.xml" \
           "$CRAFT_PART_INSTALL/maven/conf/settings.xml"
+    stage:
+    # Excludes the JLine native libraries, which fail review:
+    #   Rejected. Automated review found 1 errors and 1 warnings.
+    #   1 Warning: Found files with executable stack.
+    #   1 Fail: Found binaries for architecture 'all'.
+    - -maven/lib/jline-native/FreeBSD
+    - -maven/lib/jline-native/Linux
+    - -maven/lib/jline-native/Windows
