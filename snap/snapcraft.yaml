@@ -126,7 +126,7 @@ parts:
       export MAVEN_OPTS="$proxies"
       "$MAVEN_HOME/bin/mvn" --batch-mode --strict-checksums \
           --define distributionTargetDir="$CRAFT_PART_INSTALL/maven" \
-          --define skipTests=true \
+          --define maven.test.failure.ignore=true \
           --quiet --show-version package
 
       # Patches the default location of the local repository
